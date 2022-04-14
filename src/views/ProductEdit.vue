@@ -3,53 +3,83 @@ import axios from 'axios';
 export default {
   data: function () {
     return {
-      message: "Welcome to Vue.js! edit",
-      editProductParams: {},
-      suppliers: []
+      message: "Welcome to Edit Product",
+      editProductParams: {
+        new_images: []
+      },
+      editProductImages: [],
+      newProductImages: '',
+      suppliers: [],
+      errors: []
     };
   },
   created: function () {
-    axios.get(`/products/${this.$route.params.id}.json`).then(response => {
-      console.log(response.data);
-      this.editProductParams = response.data.product;
-      this.suppliers = response.data.suppliers;
-    })
-
+    this.showProduct();
+    this.indexSuppliers();
   },
   methods: {
-    submit: function () {
-      console.log('submitting')
-      axios.patch(`/products/${this.$route.params.id}`, this.editProductParams).then(response => {
-        console.log(response.data);
-        this.$router.push("/")
-      })
+    showProduct: function () {
+      axios.get(`/products/${this.$route.params.id}.json`)
+        .then(response => {
+          console.log(response.data);
+          this.editProductParams = response.data;
+          this.editProductImages = this.editProductParams.images;
+        })
+    },
+    indexSuppliers: function () {
+      axios.get('/suppliers.json')
+        .then(response => {
+          console.log(response.data);
+          this.suppliers = response.data;
+        })
+    },
+    updateProduct: function (product) {
+      this.editProductParams.new_images = this.newProductImages.split(', ');
+      axios.patch(`/products/${product.id}.json`, this.editProductParams)
+        .then(response => {
+          console.log(response.data);
+          this.$router.push(`/products/${product.id}`)
+        })
+        .catch(errors => {
+          this.errors = errors.response.data.errors;
+        })
     }
-
-  },
+  }
 };
 </script>
 
 <template>
-  <div class="home">
+  <div class="products-edit">
     <h1>{{ message }}</h1>
-    <form v-on:submit.prevent="submit()">
-
-      <p>name<input type="text" v-model="editProductParams.name"></p>
-      <p>price<input type="text" v-model="editProductParams.price"></p>
-      <p>description<input type="text" v-model="editProductParams.description"></p>
-      <p>created_at<input type="text" v-model="editProductParams.created_at"></p>
-      <p>updated_at<input type="text" v-model="editProductParams.updated_at"></p>
-      <p>quantity<input type="text" v-model="editProductParams.quantity"></p>
-      <p>supplier_id<input type="text" v-model="editProductParams.supplier_id"></p>
-      <label for="cars">Choose a car:</label>
-
-      <select name="cars" id="cars" v-model="editProductParams.supplier_id">
-        <option v-for="supplier in suppliers" v-bind:value="supplier.id">{{ supplier.name }}</option>
+    <p v-for="error in errors">{{ errors }}</p>
+    <div> Images:<br>
+      <img v-for="image in editProductImages" v-bind:src="image.url" style="max-width: 80%">
+    </div>
+    <div> Add Images:
+      <input type="text" v-model="newProductImages" placeholder="image1.jpg, image2.jpg">
+    </div>
+    <div> Name:
+      <input type="text" v-model="editProductParams.name">
+    </div>
+    <div> Description:
+      <input type="text" v-model="editProductParams.description">
+    </div>
+    <div> Price:
+      <input type="text" v-model="editProductParams.price">
+    </div>
+    <div> Supplier ID:
+      <input type="text" v-model="editProductParams.supplier_id">
+    </div>
+    <div>
+      <label for="suppliers">Supplier:</label>
+      <select name="suppliers" id="suppliers" v-model="editProductParams.supplier_id">
+        <option v-for="supplier in suppliers" v-bind:value="supplier.id">{{
+          supplier.name
+        }}</option>
       </select>
+    </div>
+    <button type="submit" v-on:click="updateProduct(editProductParams)">Submit</button>
 
-      <!-- {{ suppliers }} -->
-      <button>Update product</button>
-    </form>
   </div>
 </template>
 
