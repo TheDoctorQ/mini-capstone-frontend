@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ProductIndex from '../views/ProductIndex.vue'
-import ProductEdit from '../views/ProductEdit.vue'
-import Login from '../views/Login.vue'
-
+import UserSignup from '../views/UserSignup.vue'
+import UserLogin from '../views/UserLogin.vue'
+import UserLogout from '../views/UserLogout.vue'
+import ProductsIndex from '../views/ProductsIndex.vue'
+import ProductsShow from '../views/ProductsShow.vue'
+import ProductsNew from '../views/ProductsNew.vue'
+import ProductsEdit from '../views/ProductsEdit.vue'
 
 const routes = [
   {
@@ -12,27 +15,47 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/products',
-    name: 'productsindex',
-    component: ProductIndex
-  },
-  {
-    path: '/products/:id/edit',
-    name: 'productsedit',
-    component: ProductEdit
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: Login
-  },
-  {
     path: '/about',
     name: 'about',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: UserSignup
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: UserLogin
+  },
+  {
+    path: '/logout',
+    name: 'logout',
+    component: UserLogout
+  },
+  {
+    path: '/products',
+    name: 'products-index',
+    component: ProductsIndex
+  },
+  {
+    path: '/products/:id',
+    name: 'products-show',
+    component: ProductsShow
+  },
+  {
+    path: '/products/new',
+    name: 'products-new',
+    component: ProductsNew
+  },
+  {
+    path: '/products/:id/edit',
+    name: 'products-edit',
+    component: ProductsEdit
   }
 ]
 

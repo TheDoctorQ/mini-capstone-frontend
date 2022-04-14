@@ -25,14 +25,18 @@ export default {
 
 <template>
   <div class="products-index">
+    <h1>All Products</h1>
     <div v-for="product in products">
-      {{ product.title }}
+      <h2>{{ product.name }}</h2>
+      {{ product.price }}
+      <br />
+      {{ product.description }}
       <br />
       <router-link v-bind:to="`/products/${product.id}`">More Info</router-link>
       <br />
-      {{ product.body }}
+
       <br />
-      <img v-bind:src="product.image" />
+
       <hr />
     </div>
   </div>
