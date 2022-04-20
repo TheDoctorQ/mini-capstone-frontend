@@ -7,6 +7,8 @@ import ProductsIndex from '../views/ProductsIndex.vue'
 import ProductsShow from '../views/ProductsShow.vue'
 import ProductsNew from '../views/ProductsNew.vue'
 import ProductsEdit from '../views/ProductsEdit.vue'
+// import VueMultiselect from '../views/VueMultiselect.vue'
+
 
 const routes = [
   {
@@ -56,7 +58,12 @@ const routes = [
     path: '/products/:id/edit',
     name: 'products-edit',
     component: ProductsEdit
-  }
+  },
+  // {
+  //   path: '/tester',
+  //   name: 'vue-multiselect',
+  //   component: VueMultiselect
+  // }
 ]
 
 const router = createRouter({

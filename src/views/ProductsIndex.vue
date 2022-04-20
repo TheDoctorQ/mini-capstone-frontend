@@ -19,6 +19,13 @@ export default {
         })
     }
   },
+  // filterProducts: function () {
+  //   return this.products.filter(product =>
+  //     var lowerTitle = product.title.toLowerCase();
+  //     var lowerSearchTerm = this.lowerSearchTerm.toLowerCase();
+  //     return lowerTitle.includes(lowerSearchTerm);
+  //     )
+  // }
 };
 </script>
 
@@ -27,7 +34,7 @@ export default {
     <h1>{{ message }}</h1>
     <template>
       <div class="products-index">
-        <h2>All Products</h2>
+        Search: <input type="text" v-model="lowerSearchTerm">
         <div v-for="product in products">
           <h1>{{ product.name }}</h1>
           {{ product.price }}
